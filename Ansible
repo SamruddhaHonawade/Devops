@@ -1,0 +1,27 @@
+-> sudo apt update ansible
+
+nano hosts.ini
+
+
+[local]
+localhost ansible_connection=local
+
+
+nano setup.yaml
+
+- name: Basic server setup
+  hosts: local
+  become: yes
+  tasks:
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+        cache_valid_time: 3600  # Optional: avoids updating cache if it was updated in the last hour
+
+    - name: Install curl
+      apt:
+        name: curl
+        state: present
+
+
+->sudo ansible-playbook -I hosts.ini setup.yaml
