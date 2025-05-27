@@ -1,0 +1,33 @@
+##----------------------------------MAVEN-----------------------------------------------------------------
+
+
+sudo apt install openjdk-11-jre-headless -y
+
+
+
+sudo apt install maven -y
+
+
+mkdir maven
+cd maven
+
+git clone krisnapluto/boardgame.git
+
+
+cd boadgame
+
+
+->mvn clean
+
+mvn validate
+
+mvn complile
+
+mvn package
+
+cd target
+
+java -jar database-service-project-0.0.1.jar
+
+
+   
