@@ -1,0 +1,118 @@
+
+Flask DevOps Lab: Implement, Build, Configure, Monitor & Test
+
+=======================
+Step 1: System Setup (Ubuntu)
+=======================
+> sudo apt update
+> python3 --version
+> sudo apt install python3-pip -y
+> pip --version
+> sudo apt install python3-venv -y
+
+=======================
+Step 2: Create Project Directory
+=======================
+> mkdir devops-2
+> cd devops-2
+
+=======================
+Step 3: Create Virtual Environment
+=======================
+> python3 -m venv flaskenv
+> source flaskenv/bin/activate
+
+=======================
+Step 4: Install Flask
+=======================
+> pip install flask
+> flask --version
+
+=======================
+Step 5: Create Flask App
+=======================
+> nano app.py
+
+# app.py
+from flask import Flask
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "Hello, DevOps!"
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
+
+> python3 app.py
+> Open browser: http://localhost:5000
+
+=======================
+Step 6: Configuration using .env
+=======================
+> nano .env
+FLASK_PORT=5000
+
+> pip install python-dotenv
+
+Modify app.py:
+import os
+from flask import Flask
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "Hello, DevOps!"
+
+if __name__ == "__main__":
+    port = int(os.getenv("FLASK_PORT", 5000))
+    app.run(port=port)
+
+> python3 app.py
+
+=======================
+Step 7: Add Health Check
+=======================
+Edit app.py and add:
+@app.route('/health')
+def health():
+    return {"status": "up"}, 200
+
+> python3 app.py
+> Check on browser: http://localhost:5000/health
+
+=======================
+Step 8: Build Script
+=======================
+> nano build.sh
+
+# build.sh
+#!/bin/bash
+echo "Setting up environment..."
+python3 -m venv flaskenv
+source flaskenv/bin/activate
+pip install flask
+echo "Environment setup complete. Run the app with: python3 app.py"
+
+> bash build.sh
+
+=======================
+Step 9: Unit Testing
+=======================
+> nano test.py
+
+# test.py
+import unittest
+from app import app
+
+class TestApp(unittest.TestCase):
+    def test_home(self):
+        tester = app.test_client(self)
+        response = tester.get('/')
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.data, b"Hello, DevOps!")
+
+if __name__ == "__main__":
+    unittest.main()
+
+> python3 test.py
