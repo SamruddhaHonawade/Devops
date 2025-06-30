@@ -29,5 +29,13 @@ cd target
 
 java -jar database-service-project-0.0.1.jar
 
+if gett error
 
-   
+sudo apt update
+sudo apt install openjdk-11-jdk
+
+sudo update-alternatives --config java
+sudo update-alternatives --config javac
+
+
+
